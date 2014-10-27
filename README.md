@@ -1,3 +1,15 @@
+# About this fork
+
+I removed the static jade file in ``plugins/web/``, so we can use a external project folder for ngFrame.
+
+Please change the destination path in your manifest file.
+
+*default*
+``
+var destination = require('path').join(__dirname, '../public/dist/')
+``
+
+
 # Frame
 
 A user system API for Node.js. Bring your own front-end.
