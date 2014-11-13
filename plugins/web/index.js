@@ -22,7 +22,7 @@ exports.register = function (plugin, options, next) {
     method: 'GET',
     handler: {
       file: function (req) {
-        return 'views/' + req.params.filename
+        return 'modules/' + req.params.filename
       }
     }
   })
