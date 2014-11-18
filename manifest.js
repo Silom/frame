@@ -3,7 +3,7 @@ var config = require('./config');
 var criteria = {
     env: process.env.NODE_ENV
 };
-var destination = require('path').join(__dirname, '../public/')
+var destination = require('path').join(__dirname, '../public/dist/')
 
 var manifest = {
     $meta: 'This file defines the plot device.',
@@ -16,7 +16,7 @@ var manifest = {
             },
             labels: ['web'],
             files: {
-                relativeTo: destination + 'dist/'
+                relativeTo: destination
             }
         }
     }],
@@ -25,7 +25,7 @@ var manifest = {
         'lout': {},
         'visionary': {
             engines: { jade: 'jade' },
-            path: destination + 'src/'
+            path: destination
         },
         './plugins/auth': {},
         './plugins/models': {},
