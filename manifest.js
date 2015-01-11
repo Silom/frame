@@ -1,23 +1,31 @@
 var Confidence = require('confidence');
-var config = require('./config');
+var Config = require('./config');
+
 var criteria = {
     env: process.env.NODE_ENV
 };
+
 var destination = require('path').join(__dirname, '../public/dist/')
 
 var manifest = {
     $meta: 'This file defines the plot device.',
-    servers: [{
-        port: config.get('/port/web'),
-        options: {
-            security: true,
-            debug: {
-                request: ['error']
-            },
-            labels: ['web'],
-            files: {
-                relativeTo: destination
+    server: {
+        debug: {
+            request: ['error']
+        },
+        connections: {
+            routes: {
+                security: true
             }
+        }
+    },
+    connections: [{
+        port: Config.get('/port/web'),
+        labels: ['web'],
+        routes: {
+          files: {
+            relativeTo: destination
+          }
         }
     }],
     plugins: {
@@ -27,22 +35,34 @@ var manifest = {
             engines: { jade: 'jade' },
             path: destination
         },
-        './plugins/auth': {},
-        './plugins/models': {},
-        './plugins/mailer': {},
-        './plugins/api/accounts': { basePath: '/api' },
-        './plugins/api/admin-groups': { basePath: '/api' },
-        './plugins/api/admins': { basePath: '/api' },
-        './plugins/api/auth-attempts': { basePath: '/api' },
-        './plugins/api/contact': { basePath: '/api' },
-        './plugins/api/index': { basePath: '/api' },
-        './plugins/api/login': { basePath: '/api' },
-        './plugins/api/logout': { basePath: '/api' },
-        './plugins/api/sessions': { basePath: '/api' },
-        './plugins/api/signup': { basePath: '/api' },
-        './plugins/api/statuses': { basePath: '/api' },
-        './plugins/api/users': { basePath: '/api' },
-        './plugins/web/index': {}
+        'hapi-mongo-models': {
+            mongodb: Config.get('/hapiMongoModels/mongodb'),
+            models: {
+                Account: './server/models/account',
+                AdminGroup: './server/models/admin-group',
+                Admin: './server/models/admin',
+                AuthAttempt: './server/models/auth-attempt',
+                Session: './server/models/session',
+                Status: './server/models/status',
+                User: './server/models/user'
+            },
+            autoIndex: Config.get('/hapiMongoModels/autoIndex')
+        },
+        './server/auth': {},
+        './server/mailer': {},
+        './server/api/accounts': { basePath: '/api' },
+        './server/api/admin-groups': { basePath: '/api' },
+        './server/api/admins': { basePath: '/api' },
+        './server/api/auth-attempts': { basePath: '/api' },
+        './server/api/contact': { basePath: '/api' },
+        './server/api/index': { basePath: '/api' },
+        './server/api/login': { basePath: '/api' },
+        './server/api/logout': { basePath: '/api' },
+        './server/api/sessions': { basePath: '/api' },
+        './server/api/signup': { basePath: '/api' },
+        './server/api/statuses': { basePath: '/api' },
+        './server/api/users': { basePath: '/api' },
+        './server/web/index': {}
     }
 };
 
