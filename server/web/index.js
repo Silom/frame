@@ -17,16 +17,6 @@ exports.register = function (plugin, options, next) {
     }
   })
 
-  plugin.route({
-    path: '/views/{filename*}',
-    method: 'GET',
-    handler: {
-      file: function (request) {
-        return 'modules/' + request.params.filename
-      }
-    }
-  })
-
   next()
 }
 
