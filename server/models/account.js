@@ -29,9 +29,9 @@ Account.schema = Joi.object().keys({
     }),
     status: Joi.object().keys({
         current: StatusEntry.schema,
-        log: Joi.array().includes(StatusEntry.schema)
+        log: Joi.array().items(StatusEntry.schema)
     }),
-    notes: Joi.array().includes(NoteEntry.schema),
+    notes: Joi.array().items(NoteEntry.schema),
     verification: Joi.object().keys({
         complete: Joi.boolean(),
         token: Joi.string()
@@ -59,13 +59,13 @@ Account.create = function (name, callback) {
         timeCreated: new Date()
     };
 
-    this.insert(document, function (err, accounts) {
+    this.insertOne(document, function (err, docs) {
 
         if (err) {
             return callback(err);
         }
 
-        callback(null, accounts[0]);
+        callback(null, docs[0]);
     });
 };
 
